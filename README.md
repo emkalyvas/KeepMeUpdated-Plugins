@@ -6,9 +6,10 @@ KeepMeUpdated uses a dynamic plugin architecture that allows you to extend notif
 
 ## Available Plugins
 
-| Plugin | ID | Description | File |
-|---|---|---|---|
-| **Gotify** | `gotify` | Send push notifications to a Gotify server. | [`gotify.py`](gotify.py) |
+| Plugin | ID | Type | Description | File |
+|---|---|---|---|---|
+| **Gotify** | `gotify` | Channel | Send push notifications to a Gotify server. | [`gotify.py`](gotify.py) |
+| **OpenWeatherMap** | `weather_owm` | Data Source | Provides live weather context variables like `{temperature}`. | [`weather.py`](weather.py) |
 
 ## How to Use in KeepMeUpdated
 
@@ -26,18 +27,22 @@ A KeepMeUpdated plugin repository consists of:
 
 ## Creating Your Own Plugin
 
+KeepMeUpdated supports two types of plugins: **Channels** (for sending notifications) and **Data Sources** (for providing dynamic context variables).
+
 To contribute a new plugin to this repository:
 
-1. Create a new Python file (e.g., `my_channel.py`).
-2. Define a class that inherits from `BaseNotificationChannel` (imported from KeepMeUpdated core).
-3. Implement the following required methods:
+1. Create a new Python file (e.g., `my_plugin.py`).
+2. Define a class that inherits from either `BaseNotificationChannel` or `BaseDataSourcePlugin` (imported from KeepMeUpdated core).
+3. Implement the required schema methods:
    - `get_plugin_id()`: Returns a unique string ID.
    - `get_name()`: Returns the display name.
-   - `get_config_schema()`: Returns a JSON schema for the channel configuration.
-   - `get_notification_schema()`: Returns a JSON schema for the notification payload.
+   - `get_config_schema()`: Returns a JSON schema for the plugin's configuration.
+   - For Channels: `get_notification_schema()` Returns a schema for the notification payload.
+   - For Data Sources: `get_context_schema()` Returns a list of provided variables.
 4. Implement the execution logic:
    - `validate_config()`: Validates the user's saved configuration.
-   - `send(...)`: An `async` method that handles sending the notification.
+   - For Channels: `send(...)`: An `async` method that handles sending the notification.
+   - For Data Sources: `fetch_context()`: An `async` method that returns a dictionary of variables.
 5. Add an entry for your plugin in `registry.json`.
 
 For more details on KeepMeUpdated and how the plugin architecture works, refer to the main KeepMeUpdated repository.
