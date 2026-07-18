@@ -1,9 +1,9 @@
 import feedparser
 import asyncio
 from typing import Dict, Any
-from app.plugins.base import BaseDataSource
+from app.plugins.base import BaseDataSourcePlugin
 
-class RSSDataSource(BaseDataSource):
+class RSSDataSource(BaseDataSourcePlugin):
     
     @classmethod
     def get_plugin_id(cls) -> str:
@@ -23,10 +23,19 @@ class RSSDataSource(BaseDataSource):
             "required": ["feed_url"]
         }
         
+    @classmethod
+    def get_context_schema(cls) -> list:
+        return [
+            {"name": "feed_title", "description": "Title of the RSS feed", "example": "Hacker News"},
+            {"name": "title", "description": "Title of the latest entry", "example": "Show HN: KeepMeUpdated"},
+            {"name": "link", "description": "URL of the latest entry", "example": "https://news.ycombinator.com"},
+            {"name": "summary", "description": "Summary or description", "example": "A new platform..."}
+        ]
+        
     def validate_config(self) -> bool:
         return bool(self.config.get("feed_url"))
         
-    async def fetch_data(self) -> Dict[str, Any]:
+    async def fetch_context(self) -> Dict[str, Any]:
         feed_url = self.config.get("feed_url")
         
         if not feed_url:

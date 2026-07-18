@@ -1,8 +1,8 @@
 import httpx
 from typing import Dict, Any
-from app.plugins.base import BaseDataSource
+from app.plugins.base import BaseDataSourcePlugin
 
-class DailyInspirationDataSource(BaseDataSource):
+class DailyInspirationDataSource(BaseDataSourcePlugin):
     
     @classmethod
     def get_plugin_id(cls) -> str:
@@ -22,10 +22,17 @@ class DailyInspirationDataSource(BaseDataSource):
             "required": ["mode"]
         }
         
+    @classmethod
+    def get_context_schema(cls) -> list:
+        return [
+            {"name": "quote", "description": "Motivational quote text", "example": "The only way to do great work is to love what you do."},
+            {"name": "author", "description": "Author of the quote", "example": "Steve Jobs"}
+        ]
+        
     def validate_config(self) -> bool:
         return True
         
-    async def fetch_data(self) -> Dict[str, Any]:
+    async def fetch_context(self) -> Dict[str, Any]:
         mode = self.config.get("mode", "random")
         url = f"https://zenquotes.io/api/{mode}"
         

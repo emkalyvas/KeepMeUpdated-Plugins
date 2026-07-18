@@ -1,8 +1,8 @@
 import httpx
 from typing import Dict, Any
-from app.plugins.base import BaseDataSource
+from app.plugins.base import BaseDataSourcePlugin
 
-class CoinGeckoDataSource(BaseDataSource):
+class CoinGeckoDataSource(BaseDataSourcePlugin):
     
     @classmethod
     def get_plugin_id(cls) -> str:
@@ -23,10 +23,17 @@ class CoinGeckoDataSource(BaseDataSource):
             "required": ["coin_id", "currency"]
         }
         
+    @classmethod
+    def get_context_schema(cls) -> list:
+        return [
+            {"name": "price", "description": "Current price in specified currency", "example": "65000.00"},
+            {"name": "change_24h", "description": "Percentage change in last 24 hours", "example": "2.5%"}
+        ]
+        
     def validate_config(self) -> bool:
         return bool(self.config.get("coin_id") and self.config.get("currency"))
         
-    async def fetch_data(self) -> Dict[str, Any]:
+    async def fetch_context(self) -> Dict[str, Any]:
         coin = self.config.get("coin_id", "bitcoin").lower()
         currency = self.config.get("currency", "usd").lower()
         
