@@ -57,8 +57,7 @@ class GotifyChannel(BaseNotificationChannel):
         try:
             headers = {
                 "Content-Type": "application/json",
-                "X-Gotify-Key": app_token,
-                "Authorization": f"Bearer {app_token}"
+                "X-Gotify-Key": app_token
             }
             req = urllib.request.Request(url, json.dumps(data).encode("utf-8"), headers=headers)
             with urllib.request.urlopen(req) as response:
