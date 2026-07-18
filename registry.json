@@ -1,0 +1,12 @@
+{
+  "name": "KeepMeUpdated Official Plugins",
+  "plugins": [
+    {
+      "id": "gotify",
+      "name": "Gotify Notification Channel",
+      "description": "Send push notifications to a Gotify server",
+      "version": "1.0.0",
+      "file_url": "gotify.py"
+    }
+  ]
+}
