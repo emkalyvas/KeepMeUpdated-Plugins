@@ -47,7 +47,7 @@ class GotifyChannel(BaseNotificationChannel):
         if not server_url or not app_token:
             return False
             
-        url = f"{server_url}/message?token={app_token}"
+        url = f"{server_url}/message"
         data = {
             "title": parameters.get("title", title),
             "message": parameters.get("message", payload or ""),
@@ -55,7 +55,11 @@ class GotifyChannel(BaseNotificationChannel):
         }
         
         try:
-            req = urllib.request.Request(url, json.dumps(data).encode("utf-8"), headers={"Content-Type": "application/json"})
+            headers = {
+                "Content-Type": "application/json",
+                "X-Gotify-Key": app_token
+            }
+            req = urllib.request.Request(url, json.dumps(data).encode("utf-8"), headers=headers)
             with urllib.request.urlopen(req) as response:
                 return response.status == 200
         except Exception as e:
