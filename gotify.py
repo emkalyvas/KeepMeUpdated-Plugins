@@ -1,5 +1,6 @@
 
 import urllib.request
+import urllib.parse
 import json
 from typing import Dict, Any
 from .base import BaseNotificationChannel
@@ -47,10 +48,14 @@ class GotifyChannel(BaseNotificationChannel):
         if not server_url or not app_token:
             return False
             
-        url = f"{server_url}/message"
+        url = f"{server_url}/message?token={urllib.parse.quote(app_token)}"
+        
+        # Ensure message is not empty as Gotify requires it
+        message_content = parameters.get("message") or payload or "KeepMeUpdated Test Notification"
+        
         data = {
             "title": parameters.get("title", title),
-            "message": parameters.get("message", payload or ""),
+            "message": message_content,
             "priority": parameters.get("priority", 5)
         }
         
