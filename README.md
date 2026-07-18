@@ -10,6 +10,12 @@ KeepMeUpdated uses a dynamic plugin architecture that allows you to extend notif
 |---|---|---|---|---|
 | **Gotify** | `gotify` | Channel | Send push notifications to a Gotify server. | [`gotify.py`](gotify.py) |
 | **OpenWeatherMap** | `weather_owm` | Data Source | Provides live weather context variables like `{temperature}`. | [`weather.py`](weather.py) |
+| **Apprise Meta-Channel** | `apprise` | Channel | Send notifications to hundreds of services simultaneously. | [`apprise_channel.py`](apprise_channel.py) |
+| **MQTT (Home Assistant)** | `mqtt` | Channel | Publish payloads to an MQTT broker to trigger automations. | [`mqtt_channel.py`](mqtt_channel.py) |
+| **Webhook (HTTP Request)** | `webhook` | Channel | Trigger external webhooks or APIs via GET/POST requests. | [`webhook_channel.py`](webhook_channel.py) |
+| **CoinGecko Crypto** | `coingecko` | Data Source | Fetch live cryptocurrency prices and 24h changes. | [`coingecko_datasource.py`](coingecko_datasource.py) |
+| **RSS / News Fetcher** | `rss_feed` | Data Source | Fetch the latest headline and summary from any RSS feed. | [`rss_datasource.py`](rss_datasource.py) |
+| **Daily Inspiration** | `inspiration` | Data Source | Fetch a random or daily motivational quote via ZenQuotes. | [`inspiration_datasource.py`](inspiration_datasource.py) |
 
 ## How to Use in KeepMeUpdated
 
