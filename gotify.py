@@ -41,8 +41,8 @@ class GotifyChannel(BaseNotificationChannel):
         return bool(self.config.get("server_url") and self.config.get("app_token"))
         
     async def send(self, title: str, payload: str, parameters: Dict[str, Any], **kwargs) -> bool:
-        server_url = self.config.get("server_url", "").rstrip("/")
-        app_token = self.config.get("app_token")
+        server_url = self.config.get("server_url", "").strip().rstrip("/")
+        app_token = self.config.get("app_token", "").strip()
         
         if not server_url or not app_token:
             return False
@@ -57,7 +57,8 @@ class GotifyChannel(BaseNotificationChannel):
         try:
             headers = {
                 "Content-Type": "application/json",
-                "X-Gotify-Key": app_token
+                "X-Gotify-Key": app_token,
+                "Authorization": f"Bearer {app_token}"
             }
             req = urllib.request.Request(url, json.dumps(data).encode("utf-8"), headers=headers)
             with urllib.request.urlopen(req) as response:
