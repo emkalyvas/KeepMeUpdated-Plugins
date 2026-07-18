@@ -7,6 +7,13 @@
       "description": "Send push notifications to a Gotify server",
       "version": "1.0.0",
       "file_url": "gotify.py"
+    },
+    {
+      "id": "weather_owm",
+      "name": "OpenWeatherMap Data Source",
+      "description": "Provides weather context variables for notifications",
+      "version": "1.0.0",
+      "file_url": "weather.py"
     }
   ]
 }
