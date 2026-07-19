@@ -14,7 +14,9 @@
       "description": "Provides weather context variables for notifications",
       "version": "1.0.0",
       "file_url": "weather.py",
-      "requirements": ["httpx"]
+      "requirements": [
+        "httpx"
+      ]
     },
     {
       "id": "apprise",
@@ -22,7 +24,9 @@
       "description": "Send notifications to hundreds of services simultaneously",
       "version": "1.0.0",
       "file_url": "apprise_channel.py",
-      "requirements": ["apprise"]
+      "requirements": [
+        "apprise"
+      ]
     },
     {
       "id": "mqtt",
@@ -30,7 +34,9 @@
       "description": "Publish payloads to an MQTT broker to trigger automations",
       "version": "1.0.0",
       "file_url": "mqtt_channel.py",
-      "requirements": ["paho-mqtt"]
+      "requirements": [
+        "paho-mqtt"
+      ]
     },
     {
       "id": "webhook",
@@ -38,7 +44,9 @@
       "description": "Trigger external webhooks or APIs",
       "version": "1.0.0",
       "file_url": "webhook_channel.py",
-      "requirements": ["httpx"]
+      "requirements": [
+        "httpx"
+      ]
     },
     {
       "id": "coingecko",
@@ -46,7 +54,9 @@
       "description": "Fetch live cryptocurrency prices and 24h changes",
       "version": "1.0.0",
       "file_url": "coingecko_datasource.py",
-      "requirements": ["httpx"]
+      "requirements": [
+        "httpx"
+      ]
     },
     {
       "id": "rss_feed",
@@ -54,7 +64,9 @@
       "description": "Fetch the latest headline from any RSS feed",
       "version": "1.0.0",
       "file_url": "rss_datasource.py",
-      "requirements": ["feedparser"]
+      "requirements": [
+        "feedparser"
+      ]
     },
     {
       "id": "inspiration",
@@ -62,15 +74,19 @@
       "description": "Fetch a random or daily motivational quote and author",
       "version": "1.0.0",
       "file_url": "inspiration_datasource.py",
-      "requirements": ["httpx"]
+      "requirements": [
+        "httpx"
+      ]
     },
     {
       "id": "google_assistant",
       "name": "Google Assistant (Cast)",
       "description": "Play voice messages on Google Nest devices",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "file_url": "google_assistant_channel.py",
-      "requirements": ["pychromecast"]
+      "requirements": [
+        "pychromecast"
+      ]
     }
   ]
 }
