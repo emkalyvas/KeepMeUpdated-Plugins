@@ -94,11 +94,18 @@ class GoogleAssistantChannel(BaseNotificationChannel):
                 pass
                 
             if is_ip:
-                cast = pychromecast.get_chromecast_from_host((device_name, 8009, None, None, None))
+                cast = pychromecast.get_chromecast_from_host(
+                    (device_name, 8009, None, None, None),
+                    tries=1,
+                    timeout=5.0
+                )
                 if not cast:
                     print(f"Could not connect to Google Cast device at IP '{device_name}'.")
                     return False
-                cast.wait()
+                cast.wait(timeout=5.0)
+                if not cast.is_idle:
+                    print(f"Timed out waiting for cast device at IP '{device_name}'.")
+                    return False
                 browser = None
             else:
                 # Discover chromecasts matching the device name
@@ -108,7 +115,7 @@ class GoogleAssistantChannel(BaseNotificationChannel):
                     return False
                     
                 cast = chromecasts[0]
-                cast.wait()
+                cast.wait(timeout=5.0)
             
             # Play the generated TTS URL
             cast.media_controller.play_media(tts_url, "audio/mp3")
