@@ -82,7 +82,7 @@
       "id": "google_assistant",
       "name": "Google Assistant (Cast)",
       "description": "Play voice messages on Google Nest devices",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "file_url": "google_assistant_channel.py",
       "requirements": [
         "pychromecast"

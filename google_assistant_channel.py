@@ -117,6 +117,11 @@ class GoogleAssistantChannel(BaseNotificationChannel):
                 cast = chromecasts[0]
                 cast.wait(timeout=5.0)
             
+            # Stop any currently playing media/app to ensure the notification is heard
+            cast.quit_app()
+            import time
+            time.sleep(1) # Give it a brief moment to exit the current app
+            
             # Play the generated TTS URL
             cast.media_controller.play_media(tts_url, "audio/mp3")
             cast.media_controller.block_until_active()
