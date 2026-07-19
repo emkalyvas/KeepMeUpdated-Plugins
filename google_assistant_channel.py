@@ -121,9 +121,25 @@ class GoogleAssistantChannel(BaseNotificationChannel):
             cast.media_controller.play_media(tts_url, "audio/mp3")
             cast.media_controller.block_until_active()
             
+            import time
+            # Wait for the media to start playing or buffering
+            for _ in range(50):
+                if cast.media_controller.status.player_state in ['PLAYING', 'BUFFERING']:
+                    break
+                time.sleep(0.1)
+                
+            # Wait for the media to finish playing
+            for _ in range(60): # Max 30 seconds
+                if cast.media_controller.status.player_state not in ['PLAYING', 'BUFFERING']:
+                    break
+                time.sleep(0.5)
+            
             # Clean up the discovery browser
             if browser:
                 pychromecast.discovery.stop_discovery(browser)
+                
+            # Explicitly disconnect to free up the socket for future notifications
+            cast.disconnect()
             return True
             
         except Exception as e:
