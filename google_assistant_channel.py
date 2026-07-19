@@ -25,7 +25,8 @@ class GoogleAssistantChannel(BaseNotificationChannel):
                 "device_name": {
                     "type": "string", 
                     "title": "Device Name", 
-                    "description": "The exact name of your Google Nest device (e.g. 'Living Room speaker')"
+                    "description": "The exact name of your Google Nest device (e.g. 'Living Room speaker')",
+                    "dynamic_options": True
                 },
                 "language": {
                     "type": "string",
@@ -46,6 +47,20 @@ class GoogleAssistantChannel(BaseNotificationChannel):
             },
             "required": ["message"]
         }
+        
+    @classmethod
+    async def get_dynamic_options(cls, field_name: str) -> list:
+        if field_name == "device_name":
+            if pychromecast is None:
+                return []
+            try:
+                chromecasts, browser = pychromecast.get_chromecasts()
+                pychromecast.discovery.stop_discovery(browser)
+                return [c.cast_info.friendly_name for c in chromecasts]
+            except Exception as e:
+                print(f"Error discovering chromecasts: {e}")
+                return []
+        return []
         
     def validate_config(self) -> bool:
         return bool(self.config.get("device_name"))
