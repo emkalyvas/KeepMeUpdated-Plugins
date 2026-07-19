@@ -25,6 +25,12 @@ KeepMeUpdated uses a dynamic plugin architecture that allows you to extend notif
 3. Add a new repository pointing to the URL where this repository's `registry.json` is hosted.
 4. KeepMeUpdated will automatically fetch, load, and make the plugins available for your scheduled notifications!
 
+### Plugin-Specific Prerequisites
+
+Some plugins require specific environmental configurations when KeepMeUpdated is running in Docker:
+
+- **Google Assistant (`google_assistant`)**: This plugin relies on mDNS (ZeroConf) to scan your local network for Cast devices. For the auto-discovery "Scan" feature to work, your KeepMeUpdated Docker containers must be run with `network_mode: "host"` so they can receive local network broadcasts. If you use the default Docker bridge network, discovery will fail, and you must manually enter the exact IP address of your Google Nest device in the "Device Name" field instead.
+
 ## Repository Structure
 
 A KeepMeUpdated plugin repository consists of:

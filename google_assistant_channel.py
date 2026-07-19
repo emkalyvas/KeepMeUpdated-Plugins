@@ -85,21 +85,38 @@ class GoogleAssistantChannel(BaseNotificationChannel):
         tts_url = f"https://translate.google.com/translate_tts?ie=UTF-8&total=1&idx=0&client=tw-ob&q={encoded_message}&tl={lang}"
         
         try:
-            # Discover chromecasts matching the device name
-            chromecasts, browser = pychromecast.get_listed_chromecasts(friendly_names=[device_name])
-            if not chromecasts:
-                print(f"Could not find a Google Cast device named '{device_name}' on the local network.")
-                return False
+            import ipaddress
+            is_ip = False
+            try:
+                ipaddress.ip_address(device_name)
+                is_ip = True
+            except ValueError:
+                pass
                 
-            cast = chromecasts[0]
-            cast.wait()
+            if is_ip:
+                cast = pychromecast.get_chromecast_from_host((device_name, 8009, None, None, None))
+                if not cast:
+                    print(f"Could not connect to Google Cast device at IP '{device_name}'.")
+                    return False
+                cast.wait()
+                browser = None
+            else:
+                # Discover chromecasts matching the device name
+                chromecasts, browser = pychromecast.get_listed_chromecasts(friendly_names=[device_name])
+                if not chromecasts:
+                    print(f"Could not find a Google Cast device named '{device_name}' on the local network.")
+                    return False
+                    
+                cast = chromecasts[0]
+                cast.wait()
             
             # Play the generated TTS URL
             cast.media_controller.play_media(tts_url, "audio/mp3")
             cast.media_controller.block_until_active()
             
             # Clean up the discovery browser
-            pychromecast.discovery.stop_discovery(browser)
+            if browser:
+                pychromecast.discovery.stop_discovery(browser)
             return True
             
         except Exception as e:
