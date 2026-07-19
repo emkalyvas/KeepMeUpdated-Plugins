@@ -143,6 +143,10 @@ class GoogleAssistantChannel(BaseNotificationChannel):
             if browser:
                 pychromecast.discovery.stop_discovery(browser)
                 
+            # Stop the Default Media Receiver to release the device back to its idle state
+            cast.quit_app()
+            time.sleep(1) # Give it a moment to process the quit command
+                
             # Explicitly disconnect to free up the socket for future notifications
             cast.disconnect()
             return True
