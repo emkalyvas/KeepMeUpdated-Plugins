@@ -16,6 +16,7 @@ KeepMeUpdated uses a dynamic plugin architecture that allows you to extend notif
 | **CoinGecko Crypto** | `coingecko` | Data Source | Fetch live cryptocurrency prices and 24h changes. | [`coingecko_datasource.py`](coingecko_datasource.py) |
 | **RSS / News Fetcher** | `rss_feed` | Data Source | Fetch the latest headline and summary from any RSS feed. | [`rss_datasource.py`](rss_datasource.py) |
 | **Daily Inspiration** | `inspiration` | Data Source | Fetch a random or daily motivational quote via ZenQuotes. | [`inspiration_datasource.py`](inspiration_datasource.py) |
+| **Google Assistant** | `google_assistant` | Channel | Play voice messages on Google Nest devices using text-to-speech. | [`google_assistant_channel.py`](google_assistant_channel.py) |
 
 ## How to Use in KeepMeUpdated
 

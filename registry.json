@@ -13,49 +13,64 @@
       "name": "OpenWeatherMap Data Source",
       "description": "Provides weather context variables for notifications",
       "version": "1.0.0",
-      "file_url": "weather.py"
+      "file_url": "weather.py",
+      "requirements": ["httpx"]
     },
     {
       "id": "apprise",
       "name": "Apprise Meta-Channel",
       "description": "Send notifications to hundreds of services simultaneously",
       "version": "1.0.0",
-      "file_url": "apprise_channel.py"
+      "file_url": "apprise_channel.py",
+      "requirements": ["apprise"]
     },
     {
       "id": "mqtt",
       "name": "MQTT (Home Assistant)",
       "description": "Publish payloads to an MQTT broker to trigger automations",
       "version": "1.0.0",
-      "file_url": "mqtt_channel.py"
+      "file_url": "mqtt_channel.py",
+      "requirements": ["paho-mqtt"]
     },
     {
       "id": "webhook",
       "name": "Webhook (HTTP Request)",
       "description": "Trigger external webhooks or APIs",
       "version": "1.0.0",
-      "file_url": "webhook_channel.py"
+      "file_url": "webhook_channel.py",
+      "requirements": ["httpx"]
     },
     {
       "id": "coingecko",
       "name": "CoinGecko Crypto Tracker",
       "description": "Fetch live cryptocurrency prices and 24h changes",
       "version": "1.0.0",
-      "file_url": "coingecko_datasource.py"
+      "file_url": "coingecko_datasource.py",
+      "requirements": ["httpx"]
     },
     {
       "id": "rss_feed",
       "name": "RSS / News Fetcher",
       "description": "Fetch the latest headline from any RSS feed",
       "version": "1.0.0",
-      "file_url": "rss_datasource.py"
+      "file_url": "rss_datasource.py",
+      "requirements": ["feedparser"]
     },
     {
       "id": "inspiration",
       "name": "Daily Inspiration (ZenQuotes)",
       "description": "Fetch a random or daily motivational quote and author",
       "version": "1.0.0",
-      "file_url": "inspiration_datasource.py"
+      "file_url": "inspiration_datasource.py",
+      "requirements": ["httpx"]
+    },
+    {
+      "id": "google_assistant",
+      "name": "Google Assistant (Cast)",
+      "description": "Play voice messages on Google Nest devices",
+      "version": "1.0.0",
+      "file_url": "google_assistant_channel.py",
+      "requirements": ["pychromecast"]
     }
   ]
 }

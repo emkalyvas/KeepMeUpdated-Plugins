@@ -1,0 +1,92 @@
+import urllib.parse
+from typing import Dict, Any
+from .base import BaseNotificationChannel
+
+try:
+    import pychromecast
+except ImportError:
+    pychromecast = None
+
+class GoogleAssistantChannel(BaseNotificationChannel):
+    
+    @classmethod
+    def get_plugin_id(cls) -> str:
+        return "google_assistant"
+        
+    @classmethod
+    def get_name(cls) -> str:
+        return "Google Assistant (Cast)"
+        
+    @classmethod
+    def get_config_schema(cls) -> dict:
+        return {
+            "type": "object",
+            "properties": {
+                "device_name": {
+                    "type": "string", 
+                    "title": "Device Name", 
+                    "description": "The exact name of your Google Nest device (e.g. 'Living Room speaker')"
+                },
+                "language": {
+                    "type": "string",
+                    "title": "Language Code",
+                    "description": "The language code for text-to-speech (e.g. 'en', 'el', 'fr')",
+                    "default": "en"
+                }
+            },
+            "required": ["device_name"]
+        }
+        
+    @classmethod
+    def get_notification_schema(cls) -> dict:
+        return {
+            "type": "object",
+            "properties": {
+                "message": {"type": "string", "title": "Message to speak", "format": "textarea"}
+            },
+            "required": ["message"]
+        }
+        
+    def validate_config(self) -> bool:
+        return bool(self.config.get("device_name"))
+        
+    async def send(self, title: str, payload: str, parameters: Dict[str, Any], **kwargs) -> bool:
+        if pychromecast is None:
+            print("Google Assistant plugin requires 'pychromecast'. Please install it.")
+            return False
+
+        device_name = self.config.get("device_name", "").strip()
+        lang = self.config.get("language", "en").strip()
+        
+        if not device_name:
+            return False
+            
+        message = parameters.get("message") or payload
+        if not message:
+            return False
+            
+        # Build the Google Translate TTS URL
+        encoded_message = urllib.parse.quote(message)
+        tts_url = f"https://translate.google.com/translate_tts?ie=UTF-8&total=1&idx=0&client=tw-ob&q={encoded_message}&tl={lang}"
+        
+        try:
+            # Discover chromecasts matching the device name
+            chromecasts, browser = pychromecast.get_listed_chromecasts(friendly_names=[device_name])
+            if not chromecasts:
+                print(f"Could not find a Google Cast device named '{device_name}' on the local network.")
+                return False
+                
+            cast = chromecasts[0]
+            cast.wait()
+            
+            # Play the generated TTS URL
+            cast.media_controller.play_media(tts_url, "audio/mp3")
+            cast.media_controller.block_until_active()
+            
+            # Clean up the discovery browser
+            pychromecast.discovery.stop_discovery(browser)
+            return True
+            
+        except Exception as e:
+            print(f"Google Assistant send failed: {e}")
+            return False
