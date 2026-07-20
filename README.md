@@ -58,4 +58,4 @@ To contribute a new plugin to this repository:
    - For Data Sources: `fetch_context()`: An `async` method that returns a dictionary of variables.
 5. Add an entry for your plugin in `registry.json`.
 
-For more details on KeepMeUpdated and how the plugin architecture works, refer to the [main KeepMeUpdated repository](https://github.com/emkalyvas/KeepMeUpdated-Plugins).
+For more details on KeepMeUpdated and how the plugin architecture works, refer to the [main KeepMeUpdated repository](https://github.com/emkalyvas/KeepMeUpdated).
