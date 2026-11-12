@@ -1,3 +1,4 @@
+import asyncio
 import paho.mqtt.publish as publish
 from typing import Dict, Any
 from app.plugins.base import BaseNotificationChannel
@@ -45,26 +46,29 @@ class MqttChannel(BaseNotificationChannel):
         username = self.config.get("username")
         password = self.config.get("password")
         
-        topic = parameters.get("topic")
+        # The channel test endpoint sends no notification parameters, so fall back
+        # to a dedicated test topic instead of failing before connecting.
+        topic = parameters.get("topic") or "keepmeupdated/test"
         msg_payload = parameters.get("payload", payload)
         
-        if not broker or not topic:
-            return False
+        if not broker:
+            raise ValueError("MQTT broker is not configured")
             
         auth = None
         if username:
             auth = {'username': username, 'password': password or ''}
             
         try:
-            publish.single(
+            # publish.single blocks on network I/O; keep it off the event loop.
+            await asyncio.to_thread(
+                publish.single,
                 topic, 
                 payload=msg_payload, 
                 hostname=broker, 
                 port=port, 
                 auth=auth,
-                client_id="keepmeupdated_mqtt"
             )
             return True
         except Exception as e:
-            print(f"MQTT publish failed: {e}")
-            return False
+            # Raise so the real cause (refused, not authorised, timeout) reaches the UI.
+            raise RuntimeError(f"MQTT publish to {broker}:{port} failed: {e}") from e

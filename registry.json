@@ -32,7 +32,7 @@
       "id": "mqtt",
       "name": "MQTT (Home Assistant)",
       "description": "Publish payloads to an MQTT broker to trigger automations",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "file_url": "mqtt_channel.py",
       "requirements": [
         "paho-mqtt"
